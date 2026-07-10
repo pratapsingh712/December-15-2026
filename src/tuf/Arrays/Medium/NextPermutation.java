@@ -18,48 +18,33 @@ public class NextPermutation {
     }
 
     private static void getNextPermutation(int[] array) {
-        List<List<Integer>> allPermutation = new ArrayList<>();
-        int[] nums = array.clone();
-        Arrays.sort(nums);
-
-        generatePermutation(nums,0,allPermutation);
-
-        List<Integer> currentList = new ArrayList<>();
-        for(int val : nums) currentList.add(val);
-
-        int index = allPermutation.indexOf(currentList);
-
-        List<Integer> nextList = allPermutation.get((index + 1) % allPermutation.size());
-
-        // Copy back to input array
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = nextList.get(i);
-        }
-    }
-
-    private static void generatePermutation(int[] nums, int index, List<List<Integer>> allPermutation) {
-        if(index==nums.length){
-            List<Integer> current = new ArrayList<>();
-            for(int val : nums){
-                current.add(val);
-            }
-            allPermutation.add(current);
-            return;
-        }
-
-        Set<Integer> visited = new HashSet<>();
-        for(int i=index; i<nums.length;i++){
-            if(visited.add(nums[i])){
-                swap(nums,index,i);
-                generatePermutation(nums,index+1,allPermutation);
-                swap(nums,index,i);
+        // need to find a dip coming from behind one I do I need to find the smallest to it's right place the number there and sort rest
+        // If I do not find any dip reverse the array
+        int index = -1;
+        for(int i=array.length-2;i>=0;i--){
+            if(array[i] < array[i+1]){
+                index = i;
+                break;
             }
         }
-    }
 
-    private static void swap(int[] arr, int i, int j){
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+        if(index<0){
+            Collections.reverse(Arrays.asList(array));
+        }else{
+            for(int i=array.length-1;i>index;i--){
+                if(array[i] > array[index]){
+                    int temp = array[index];
+                    array[index] = array[i];
+                    array[i] = temp;
+                    break;
+                }
+            }
+        }
+
+        // now let's sort the array from index+1 to n
+
+        Arrays.sort(array,index+1,array.length);
+
+        System.out.println(Arrays.toString(array));
     }
 }
