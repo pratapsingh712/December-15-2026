@@ -2,7 +2,7 @@ package tuf.BinarySearch.On1DArray;
 
 import java.util.Scanner;
 
-public class LowerBond {
+public class UpperBound {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the size of your array :");
@@ -17,42 +17,41 @@ public class LowerBond {
         System.out.println("Enter the key you want to search :");
         int key = sc.nextInt();
 
-        getLowerBond(key,array);
+        getUpperBound(key,array);
     }
 
-    private static void getLowerBond(int key, int[] array) {
-        int left = 0;
-        int right = array.length;
+    private static void getUpperBound(int key, int[] array) {
+        int low = 0;
+        int high = array.length;
         int mid = 0;
         int index = -1;
 
-        while(left<=right){
-            mid = left + (right-left)/2;
+        while(low<=high){
+            mid = low+(high-low)/2;
             if(array[mid]==key){
-                // do the search in left side one more time
-                index = getIndex(array,mid,left,key);
-                System.out.println("Lower Bound is :"+index);
+                // search on the right side for upper Bound
+                index = searchRight(array,mid,key);
+                System.out.println("Upper Bound of the key in array is :"+index);
                 return;
             }else if(array[mid]>key){
-                // key is in the right side
-                left = mid+1;
+                low = mid+1;
             }else{
-                right = mid-1;
+                high = mid-1;
             }
         }
 
-        System.out.println("Could not find element :");
-
+        System.out.println("Did not find the key :");
     }
 
-    private static int getIndex(int[] array, int mid, int left, int key) {
-        int index = mid+1;
-        for(int i=left;i<=mid;i++){
+    private static int searchRight(int[] array, int mid, int key) {
+        int index = 0;
+
+        for(int i=mid;i<array.length;i++){
             if(array[i]==key){
-                return i+1;
+                index = i;
             }
         }
 
-        return index;
+        return index+1;
     }
 }
