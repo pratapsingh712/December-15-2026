@@ -39,7 +39,6 @@ public class CountOccurrences {
                 high = mid-1;
             }
         }
-
         return -1;
     }
 
